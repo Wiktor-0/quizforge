@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\QuizController;
+use App\Http\Middleware\EnsureQuizRulesAccepted;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,20 +12,20 @@ Route::get('/o-projekcie', function () {
     return view('about');
 })->name('about');
 
-Route::get('/quizy', function () {
-    $quizzes = [
-        ['id' => 1, 'title' => 'Podstawy PHP', 'difficulty' => 'Łatwy'],
-        ['id' => 2, 'title' => 'Stolice Europy', 'difficulty' => 'Średni'],
-        ['id' => 3, 'title' => 'Kosmos', 'difficulty' => 'Trudny'],
-    ];
+Route::get('/zasady', [QuizController::class, 'rules'])
+    ->name('rules.show');
 
-    return view('quizzes.index', ['quizzes' => $quizzes]);
-})->name('quizzes.index');
+Route::post('/zasady/akceptuj', [QuizController::class, 'acceptRules'])
+    ->name('rules.accept');
 
-Route::get('/quizy/{id}', function (int $id) {
-    return "Szczegóły quizu nr {$id}";
-})->whereNumber('id')->name('quizzes.show');
+Route::get('/quizy', [QuizController::class, 'index'])
+    ->name('quizzes.index');
 
-Route::get('/quizy/{id}/start', function (int $id) {
-    return "Rozpoczynasz quiz nr {$id}";
-})->whereNumber('id')->name('quizzes.start');
+Route::get('/quizy/{id}', [QuizController::class, 'show'])
+    ->whereNumber('id')
+    ->name('quizzes.show');
+
+Route::get('/quizy/{id}/start', [QuizController::class, 'start'])
+    ->whereNumber('id')
+    ->middleware(EnsureQuizRulesAccepted::class)
+    ->name('quizzes.start');

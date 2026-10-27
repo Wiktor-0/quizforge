@@ -1,58 +1,138 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# QuizForge
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+QuizForge to prosta aplikacja quizowa tworzona w Laravelu jako projekt zaliczeniowy. Projekt jest rozwijany etapami wraz z kolejnymi zadaniami.
 
-## About Laravel
+## Zaimplementowane funkcje
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- podstawowy routing aplikacji;
+- nazwane trasy;
+- dynamiczny parametr identyfikatora quizu;
+- widoki Blade i wspólny układ stron;
+- kontroler `QuizController`;
+- własny middleware;
+- akceptowanie zasad przed rozpoczęciem quizu;
+- przechowywanie zgody w sesji.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Wymagane oprogramowanie
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Do uruchomienia projektu na Windows potrzebne są:
 
-## Learning Laravel
+- [Git](https://git-scm.com/download/win)
+- [Laravel Herd](https://herd.laravel.com/windows)
+- [Visual Studio Code](https://code.visualstudio.com/)
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel Herd dostarcza PHP oraz Composer potrzebne do działania aplikacji.
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Po instalacji należy uruchomić ponownie terminal lub VS Code i sprawdzić dostępność narzędzi:
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+```powershell
+git --version
+php --version
+composer --version
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+## Instalacja projektu
 
-## Contributing
+### 1. Przygotowanie katalogu
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```powershell
+New-Item -ItemType Directory -Path "$env:USERPROFILE\source\repos" -Force
+Set-Location "$env:USERPROFILE\source\repos"
+```
 
-## Code of Conduct
+### 2. Sklonowanie repozytorium
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```powershell
+git clone https://github.com/Wiktor-0/quizforge.git
+cd quizforge
+```
 
-## Security Vulnerabilities
+Repozytorium jest prywatne, dlatego GitHub może poprosić o zalogowanie w przeglądarce.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 3. Instalacja zależności PHP
 
-## License
+```powershell
+composer install
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 4. Przygotowanie konfiguracji
+
+```powershell
+Copy-Item .env.example .env
+php artisan key:generate
+```
+
+Projekt korzysta z SQLite. W pliku `.env` powinno znajdować się:
+
+```text
+DB_CONNECTION=sqlite
+```
+
+### 5. Przygotowanie bazy danych
+
+```powershell
+New-Item database\database.sqlite -ItemType File -Force
+php artisan migrate
+```
+
+### 6. Uruchomienie testów
+
+```powershell
+php artisan test
+```
+
+### 7. Uruchomienie aplikacji
+
+```powershell
+php artisan serve
+```
+
+Aplikacja będzie dostępna pod adresem:
+
+```text
+http://127.0.0.1:8000
+```
+
+Serwer można zatrzymać skrótem `Ctrl+C`.
+
+## Aktualizacja istniejącej kopii
+
+Jeżeli projekt jest już sklonowany na komputerze, najnowsze zmiany można pobrać poleceniami:
+
+```powershell
+git pull
+composer install
+php artisan migrate
+php artisan test
+```
+
+Następnie aplikację można uruchomić:
+
+```powershell
+php artisan serve
+```
+
+## Podstawowe trasy
+
+| Metoda | Adres | Opis |
+|---|---|---|
+| GET | `/` | Strona główna |
+| GET | `/o-projekcie` | Informacje o projekcie |
+| GET | `/quizy` | Lista quizów |
+| GET | `/quizy/{id}` | Szczegóły wybranego quizu |
+| GET | `/quizy/{id}/start` | Rozpoczęcie quizu |
+| GET | `/zasady` | Zasady quizu |
+| POST | `/zasady/akceptuj` | Zapisanie akceptacji zasad |
+
+Trasa rozpoczynania quizu jest chroniona przez własny middleware. Użytkownik, który nie zaakceptował zasad, zostaje przekierowany na stronę `/zasady`.
+
+## Pliki lokalne
+
+Następujące elementy nie są przechowywane w repozytorium:
+
+- `.env`;
+- `vendor`;
+- `node_modules`;
+- `database/database.sqlite`.
+
+Są one tworzone lub instalowane osobno na każdym komputerze.

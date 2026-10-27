@@ -33,6 +33,156 @@ composer --version
 
 ## Instalacja projektu
 
+# Instalacja na Debianie
+
+Projekt wymaga PHP 8.3 lub nowszego. Zalecany jest Debian 13.
+
+## 1. Instalacja wymaganych programów
+
+Sprawdź dostępne narzędzia:
+
+```bash
+git --version
+php --version
+composer --version
+```
+
+Komunikat `nie znaleziono polecenia` oznacza, że dany program nie jest jeszcze zainstalowany.
+
+### Instalacja z użyciem sudo
+
+Zaktualizuj listę pakietów:
+
+```bash
+sudo apt update
+```
+
+Zainstaluj Git, PHP, Composer i rozszerzenia wymagane przez Laravel:
+
+```bash
+sudo apt install -y \
+    git \
+    curl \
+    unzip \
+    composer \
+    php-cli \
+    php-curl \
+    php-mbstring \
+    php-sqlite3 \
+    php-xml \
+    php-zip
+```
+
+### Instalacja, gdy polecenie sudo nie jest dostępne
+
+Przejdź na konto administratora:
+
+```bash
+su -
+```
+
+Podaj hasło administratora, a następnie wykonaj:
+
+```bash
+apt update
+```
+
+```bash
+apt install -y \
+    git \
+    curl \
+    unzip \
+    composer \
+    php-cli \
+    php-curl \
+    php-mbstring \
+    php-sqlite3 \
+    php-xml \
+    php-zip
+```
+
+Wróć na zwykłe konto:
+
+```bash
+exit
+```
+
+Odśwież listę dostępnych poleceń:
+
+```bash
+hash -r
+```
+
+Sprawdź instalację:
+
+```bash
+git --version
+php --version
+composer --version
+```
+
+PHP musi mieć wersję `8.3` lub nowszą.
+
+Debian 12 domyślnie udostępnia PHP 8.2, które jest za stare dla tego projektu. Zalecane jest użycie Debiana 13.
+
+## 2. Pobranie projektu
+
+```bash
+mkdir -p ~/source/repos
+cd ~/source/repos
+git clone https://github.com/Wiktor-0/quizforge.git
+cd quizforge
+```
+
+Repozytorium jest prywatne, dlatego GitHub poprosi o uwierzytelnienie. GitHub nie przyjmuje hasła do konta jako hasła Git — należy użyć tokenu dostępu lub skonfigurowanego klucza SSH.
+
+## 3. Instalacja zależności projektu
+
+```bash
+composer install
+```
+
+## 4. Przygotowanie konfiguracji
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+Sprawdź, czy plik `.env` zawiera:
+
+```text
+DB_CONNECTION=sqlite
+```
+
+## 5. Przygotowanie SQLite
+
+```bash
+touch database/database.sqlite
+php artisan migrate
+```
+
+## 6. Uruchomienie testów
+
+```bash
+php artisan test
+```
+
+## 7. Uruchomienie aplikacji
+
+```bash
+php artisan serve
+```
+
+Aplikacja będzie dostępna pod adresem:
+
+```text
+http://127.0.0.1:8000
+```
+
+Serwer można zatrzymać skrótem `Ctrl+C`.
+
+### WINDOWS
 ### 1. Przygotowanie katalogu
 
 ```powershell

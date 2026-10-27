@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('home');
 })->name('home');
 
 Route::get('/o-projekcie', function () {
@@ -11,7 +11,13 @@ Route::get('/o-projekcie', function () {
 })->name('about');
 
 Route::get('/quizy', function () {
-    return 'Lista quizów';
+    $quizzes = [
+        ['id' => 1, 'title' => 'Podstawy PHP', 'difficulty' => 'Łatwy'],
+        ['id' => 2, 'title' => 'Stolice Europy', 'difficulty' => 'Średni'],
+        ['id' => 3, 'title' => 'Kosmos', 'difficulty' => 'Trudny'],
+    ];
+
+    return view('quizzes.index', ['quizzes' => $quizzes]);
 })->name('quizzes.index');
 
 Route::get('/quizy/{id}', function (int $id) {

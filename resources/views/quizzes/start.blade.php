@@ -15,22 +15,54 @@
         </p>
     </header>
 
-    @forelse ($quiz->questions as $question)
+    @if ($errors->any())
         <section>
-            <h2>
-                Pytanie {{ $loop->iteration }}:
-                {{ $question->content }}
-            </h2>
-
-            <ul>
-                @foreach ($question->answers as $answer)
-                    <li>{{ $answer->content }}</li>
-                @endforeach
-            </ul>
+            <h2>Formularz zawiera błędy</h2>
+            <p>Odpowiedz na wszystkie pytania przed wysłaniem quizu.</p>
         </section>
-    @empty
-        <p>Ten quiz nie zawiera jeszcze żadnych pytań.</p>
-    @endforelse
+    @endif
+
+    <form method="POST" action="{{ route('quizzes.submit', $quiz->id) }}">
+        @csrf
+
+        @forelse ($quiz->questions as $question)
+            <fieldset>
+                <legend>
+                    Pytanie {{ $loop->iteration }}:
+                    {{ $question->content }}
+                </legend>
+
+                @foreach ($question->answers as $answer)
+                    <label>
+                        <input
+                            type="radio"
+                            name="answers[{{ $question->id }}]"
+                            value="{{ $answer->id }}"
+                            @checked(
+                                old('answers.' . $question->id) == $answer->id
+                            )
+                        >
+
+                        {{ $answer->content }}
+                    </label>
+
+                    <br>
+                @endforeach
+
+                @error('answers.' . $question->id)
+                    <p>{{ $message }}</p>
+                @enderror
+            </fieldset>
+        @empty
+            <p>Ten quiz nie zawiera jeszcze żadnych pytań.</p>
+        @endforelse
+
+        @if ($quiz->questions->isNotEmpty())
+            <button type="submit">
+                Sprawdź wynik
+            </button>
+        @endif
+    </form>
 
     <p>
         <a href="{{ route('quizzes.show', $quiz->id) }}">

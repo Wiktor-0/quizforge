@@ -29,3 +29,8 @@ Route::get('/quizy/{id}/start', [QuizController::class, 'start'])
     ->whereNumber('id')
     ->middleware(EnsureQuizRulesAccepted::class)
     ->name('quizzes.start');
+
+Route::post('/quizy/{id}/wynik', [QuizController::class, 'submit'])
+    ->whereNumber('id')
+    ->middleware(EnsureQuizRulesAccepted::class)
+    ->name('quizzes.submit');

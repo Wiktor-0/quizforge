@@ -5,14 +5,27 @@
 @section('content')
     <h1>Dostępne quizy</h1>
 
-    <ul>
-        @foreach ($quizzes as $quiz)
-            <li>
+    @forelse ($quizzes as $quiz)
+        <article>
+            <h2>
                 <a href="{{ route('quizzes.show', $quiz['id']) }}">
                     {{ $quiz['title'] }}
                 </a>
-                — poziom: {{ $quiz['difficulty'] }}
-            </li>
-        @endforeach
-    </ul>
+            </h2>
+
+            <p>{{ $quiz['description'] }}</p>
+
+            <p>
+                Poziom: {{ $quiz['difficulty'] }}
+                |
+                Liczba pytań: {{ count($quiz['questions']) }}
+            </p>
+
+            <a href="{{ route('quizzes.show', $quiz['id']) }}">
+                Zobacz szczegóły
+            </a>
+        </article>
+    @empty
+        <p>Nie ma obecnie dostępnych quizów.</p>
+    @endforelse
 @endsection

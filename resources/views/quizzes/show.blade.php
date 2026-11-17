@@ -3,15 +3,27 @@
 @section('title', $quiz['title'] . ' | QuizForge')
 
 @section('content')
-    <h1>{{ $quiz['title'] }}</h1>
+    <article>
+        <h1>{{ $quiz['title'] }}</h1>
 
-    <p>Poziom trudności: {{ $quiz['difficulty'] }}</p>
+        <p>{{ $quiz['description'] }}</p>
 
-    <a href="{{ route('quizzes.start', $quiz['id']) }}">
-        Rozpocznij quiz
-    </a>
+        <dl>
+            <dt>Poziom trudności</dt>
+            <dd>{{ $quiz['difficulty'] }}</dd>
+
+            <dt>Liczba pytań</dt>
+            <dd>{{ count($quiz['questions']) }}</dd>
+        </dl>
+
+        <a href="{{ route('quizzes.start', $quiz['id']) }}">
+            Rozpocznij quiz
+        </a>
+    </article>
 
     <p>
-        <a href="{{ route('quizzes.index') }}">Wróć do listy quizów</a>
+        <a href="{{ route('quizzes.index') }}">
+            Wróć do listy quizów
+        </a>
     </p>
 @endsection

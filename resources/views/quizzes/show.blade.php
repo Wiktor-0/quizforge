@@ -1,25 +1,23 @@
 @extends('layouts.app')
 
-@section('title', $quiz['title'] . ' | QuizForge')
+@section('title', $quiz->title . ' | QuizForge')
 
 @section('content')
-    <article>
-        <h1>{{ $quiz['title'] }}</h1>
+    <h1>{{ $quiz->title }}</h1>
 
-        <p>{{ $quiz['description'] }}</p>
+    <p>{{ $quiz->description }}</p>
 
-        <dl>
-            <dt>Poziom trudności</dt>
-            <dd>{{ $quiz['difficulty'] }}</dd>
+    <dl>
+        <dt>Poziom trudności</dt>
+        <dd>{{ $quiz->difficulty }}</dd>
 
-            <dt>Liczba pytań</dt>
-            <dd>{{ count($quiz['questions']) }}</dd>
-        </dl>
+        <dt>Liczba pytań</dt>
+        <dd>{{ $quiz->questions->count() }}</dd>
+    </dl>
 
-        <a href="{{ route('quizzes.start', $quiz['id']) }}">
-            Rozpocznij quiz
-        </a>
-    </article>
+    <a href="{{ route('quizzes.start', $quiz->id) }}">
+        Rozpocznij quiz
+    </a>
 
     <p>
         <a href="{{ route('quizzes.index') }}">

@@ -8,20 +8,20 @@
     @forelse ($quizzes as $quiz)
         <article>
             <h2>
-                <a href="{{ route('quizzes.show', $quiz['id']) }}">
-                    {{ $quiz['title'] }}
+                <a href="{{ route('quizzes.show', $quiz->id) }}">
+                    {{ $quiz->title }}
                 </a>
             </h2>
 
-            <p>{{ $quiz['description'] }}</p>
+            <p>{{ $quiz->description }}</p>
 
             <p>
-                Poziom: {{ $quiz['difficulty'] }}
+                Poziom: {{ $quiz->difficulty }}
                 |
-                Liczba pytań: {{ count($quiz['questions']) }}
+                Liczba pytań: {{ $quiz->questions_count }}
             </p>
 
-            <a href="{{ route('quizzes.show', $quiz['id']) }}">
+            <a href="{{ route('quizzes.show', $quiz->id) }}">
                 Zobacz szczegóły
             </a>
         </article>
